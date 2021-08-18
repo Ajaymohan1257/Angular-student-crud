@@ -1,0 +1,107 @@
+<nav class="navbar bg-info">
+    <div class="container-fluid">
+        <h3 class="text-white">Student Database</h3>
+        <div class="d-flex">
+            <button type="button" class="btn btn-success" (click)="beforeAdd()" data-bs-toggle="modal" data-bs-target="#addModal">
+                Add Student
+            </button>
+        </div>
+    </div>
+</nav>
+
+<table class="table mt-5">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Phone</th>
+            <th>City</th>
+            <th>Options</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let student of studentData">
+            <td>{{student.id}}</td>
+            <td>{{student.name}}</td>
+            <td>{{student.email}}</td>
+            <td>{{student.phone}}</td>
+            <td>{{student.city}}</td>
+            <td>
+                <button class="btn btn-primary" (click)="beforeEdit(student)" data-bs-toggle="modal" data-bs-target="#addModal">Edit</button>
+                <button class="btn btn-danger mx-3" (click)="deleteStudent(student)">Delete</button>
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+<!-- Button trigger modal -->
+
+  
+  <!-- Modal -->
+  <div class="modal fade" id="addModal" tabindex="-1">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="addModalTitle">
+            <div *ngIf="addData">Add Student</div>
+            <div *ngIf="updateData">Update Student</div>
+          </h5>
+          <button type="button" class="close" data-bs-dismiss="modal">
+            <span>&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+            <form [formGroup]="form">
+
+                <div class="mb-3 form-group">
+                    <label for="name">Name</label>
+                    <input type="text" class="form-control" formControlName="name" id="name">
+                    <div *ngIf="getControl.name.touched && getControl.name.invalid">
+                        <div *ngIf="getControl.name.errors?.required" class="text-danger">
+                            Enter the name
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mb-3 form-group">
+                    <label for="email">Email</label>
+                    <input type="text" id="email" class="form-control" formControlName="email">
+                    <div *ngIf="getControl.email.touched && getControl.email.invalid">
+                        <div *ngIf="getControl.email.errors?.required" class="text-danger">
+                            Enter the email
+                        </div>
+                        <div *ngIf="getControl.email.errors?.email" class="text-danger">
+                            Enter a valid email address
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mb-3 form-group">
+                    <label for="phone">Phone</label>
+                    <input type="text" id="phone" class="form-control" formControlName="phone">
+                    <div *ngIf="getControl.phone.touched && getControl.phone.invalid">
+                        <div *ngIf="getControl.phone.errors?.required" class="text-danger">
+                            Enter the Phone Number
+                        </div>
+                        <div *ngIf="getControl.phone.errors?.pattern" class="text-danger">
+                            Enter a valid phone number
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mb-3 form-group">
+                    <label for="city">City</label>
+                    <input type="text" id="city" class="form-control" formControlName="city">
+                </div>
+            </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" id="close" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="button" id="reset" class="btn btn-secondary" (click)="form.reset()" >Reset</button>
+          <button type="button" *ngIf="addData" [disabled]="form.invalid" (click)="postStudent()" class="btn btn-primary">Add</button>
+          <button type="button" *ngIf="updateData" [disabled]="form.invalid" (click)="putStudent()" class="btn btn-primary">Update</button>
+        </div>
+      </div>
+    </div>
+  </div>
